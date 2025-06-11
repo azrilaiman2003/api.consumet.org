@@ -1,13 +1,25 @@
 import { FastifyRequest, FastifyReply, FastifyInstance, RegisterOptions } from 'fastify';
 import { MANGA } from '@consumet/extensions';
+// Import the updated MangaHere provider directly for the new methods
+import MangaHereUpdated from '../../../../consumet.ts/src/providers/manga/mangahere';
 
 const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   const mangahere = new MANGA.MangaHere();
+  const mangahereUpdated = new MangaHereUpdated();
 
   fastify.get('/', (_, rp) => {
     rp.status(200).send({
       intro: `Welcome to the MangaHere provider: check out the provider's website @ ${mangahere.toString.baseUrl}`,
-      routes: ['/:query', '/info', '/read', '/home'],
+      routes: [
+        '/:query',
+        '/info',
+        '/read',
+        '/home',
+        '/hot',
+        '/new-releases',
+        '/trending',
+        '/latest-updates'
+      ],
       documentation: 'https://docs.consumet.org/#tag/mangahere',
     });
   });
@@ -64,6 +76,70 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     try {
       const res = await mangahere
         .fetchHome()
+        .catch((err: Error) => reply.status(404).send({ message: err.message }));
+
+      reply.status(200).send(res);
+    } catch (err) {
+      reply
+        .status(500)
+        .send({ message: 'Something went wrong. Please try again later.' });
+    }
+  });
+
+  fastify.get('/hot', async (request: FastifyRequest, reply: FastifyReply) => {
+    const page = (request.query as { page: number }).page;
+
+    try {
+      const res = await mangahereUpdated
+        .fetchHotManga(page)
+        .catch((err: Error) => reply.status(404).send({ message: err.message }));
+
+      reply.status(200).send(res);
+    } catch (err) {
+      reply
+        .status(500)
+        .send({ message: 'Something went wrong. Please try again later.' });
+    }
+  });
+
+  fastify.get('/new-releases', async (request: FastifyRequest, reply: FastifyReply) => {
+    const page = (request.query as { page: number }).page;
+
+    try {
+      const res = await mangahereUpdated
+        .fetchNewMangaRelease(page)
+        .catch((err: Error) => reply.status(404).send({ message: err.message }));
+
+      reply.status(200).send(res);
+    } catch (err) {
+      reply
+        .status(500)
+        .send({ message: 'Something went wrong. Please try again later.' });
+    }
+  });
+
+  fastify.get('/trending', async (request: FastifyRequest, reply: FastifyReply) => {
+    const page = (request.query as { page: number }).page;
+
+    try {
+      const res = await mangahereUpdated
+        .fetchTrendingManga(page)
+        .catch((err: Error) => reply.status(404).send({ message: err.message }));
+
+      reply.status(200).send(res);
+    } catch (err) {
+      reply
+        .status(500)
+        .send({ message: 'Something went wrong. Please try again later.' });
+    }
+  });
+
+  fastify.get('/latest-updates', async (request: FastifyRequest, reply: FastifyReply) => {
+    const page = (request.query as { page: number }).page;
+
+    try {
+      const res = await mangahereUpdated
+        .fetchLatestUpdates(page)
         .catch((err: Error) => reply.status(404).send({ message: err.message }));
 
       reply.status(200).send(res);
