@@ -1,11 +1,8 @@
 import { FastifyRequest, FastifyReply, FastifyInstance, RegisterOptions } from 'fastify';
 import { MANGA } from '@consumet/extensions';
-// Import the updated MangaHere provider directly for the new methods
-import MangaHereUpdated from '../../../../consumet.ts/src/providers/manga/mangahere';
 
 const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   const mangahere = new MANGA.MangaHere();
-  const mangahereUpdated = new MangaHereUpdated();
 
   fastify.get('/', (_, rp) => {
     rp.status(200).send({
@@ -90,7 +87,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     const page = (request.query as { page: number }).page;
 
     try {
-      const res = await mangahereUpdated
+      const res = await mangahere 
         .fetchHotManga(page)
         .catch((err: Error) => reply.status(404).send({ message: err.message }));
 
@@ -106,7 +103,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     const page = (request.query as { page: number }).page;
 
     try {
-      const res = await mangahereUpdated
+      const res = await mangahere
         .fetchNewMangaRelease(page)
         .catch((err: Error) => reply.status(404).send({ message: err.message }));
 
@@ -122,7 +119,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     const page = (request.query as { page: number }).page;
 
     try {
-      const res = await mangahereUpdated
+      const res = await mangahere
         .fetchTrendingManga(page)
         .catch((err: Error) => reply.status(404).send({ message: err.message }));
 
@@ -138,7 +135,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     const page = (request.query as { page: number }).page;
 
     try {
-      const res = await mangahereUpdated
+      const res = await mangahere
         .fetchLatestUpdates(page)
         .catch((err: Error) => reply.status(404).send({ message: err.message }));
 
