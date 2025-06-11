@@ -7,7 +7,7 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
   fastify.get('/', (_, rp) => {
     rp.status(200).send({
       intro: `Welcome to the MangaHere provider: check out the provider's website @ ${mangahere.toString.baseUrl}`,
-      routes: ['/:query', '/info', '/read'],
+      routes: ['/:query', '/info', '/read', '/home'],
       documentation: 'https://docs.consumet.org/#tag/mangahere',
     });
   });
@@ -50,6 +50,20 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
     try {
       const res = await mangahere
         .fetchChapterPages(chapterId)
+        .catch((err: Error) => reply.status(404).send({ message: err.message }));
+
+      reply.status(200).send(res);
+    } catch (err) {
+      reply
+        .status(500)
+        .send({ message: 'Something went wrong. Please try again later.' });
+    }
+  });
+
+  fastify.get('/home', async (_, reply: FastifyReply) => {
+    try {
+      const res = await mangahere
+        .fetchHome()
         .catch((err: Error) => reply.status(404).send({ message: err.message }));
 
       reply.status(200).send(res);
