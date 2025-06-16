@@ -373,6 +373,15 @@ const routes = async (fastify: FastifyInstance, options: RegisterOptions) => {
                             • Read: /read?chapterId=:id
                         </div>
                     </div>
+                    <div class="provider-card">
+                        <div class="provider-name">AsuraScans</div>
+                        <div class="provider-routes">
+                            /manga/asurascans/<br>
+                            • Search: /:query<br>
+                            • Info: /info?id=:id<br>
+                            • Read: /read?chapterId=:id
+                        </div>
+                    </div>
                 </div>
 
                 <div class="endpoint">
@@ -1526,7 +1535,7 @@ curl "${process.env.NODE_ENV === 'production' ? 'https://api.consumet.org' : 'ht
       documentation: '/docs',
       endpoints: {
         manga: {
-          providers: ['mangadex', 'mangapill', 'mangakakalot', 'mangasee123', 'mangahere', 'mangapark', 'managreader'],
+          providers: ['mangadex', 'mangapill', 'mangakakalot', 'mangasee123', 'mangahere', 'mangapark', 'managreader', 'asurascans'],
           routes: {
             search: '/:provider/:query',
             info: '/:provider/info/:id',
