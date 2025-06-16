@@ -23,7 +23,7 @@
     },
     "homepage": "https://github.com/azrilaiman2003/consumet.ts#readme",
     "dependencies": {
-        "@consumet/extensions": "file:../consumet.ts",
+        "@consumet/extensions": "github:azrilaiman2003/consumet.ts",
         "@fastify/cors": "^8.5.0",
         "@types/node": "^18.11.17",
         "@types/ws": "^8.5.3",
